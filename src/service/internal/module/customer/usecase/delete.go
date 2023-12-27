@@ -7,7 +7,7 @@ import (
 	"log/slog"
 
 	"github.com/Shteyd/holidays/src/service/internal/lib/logger/sl"
-	"github.com/Shteyd/holidays/src/service/internal/storage"
+	"github.com/Shteyd/holidays/src/service/internal/module/customer/storage"
 )
 
 func (usecase CustomerUsecase) DeleteCustomer(ctx context.Context, customerID int64) error {
@@ -22,7 +22,7 @@ func (usecase CustomerUsecase) DeleteCustomer(ctx context.Context, customerID in
 
 	err := usecase.customerStorage.DeleteCustomer(ctx, customerID)
 	if err != nil {
-		if errors.Is(err, storage.ErrNotFound) {
+		if errors.Is(err, storage.ErrCustomerNotFound) {
 			log.Warn("customer not found")
 			return ErrCustomerNotFound
 		}

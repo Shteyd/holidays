@@ -7,7 +7,7 @@ import (
 	"log/slog"
 
 	"github.com/Shteyd/holidays/src/service/internal/lib/logger/sl"
-	"github.com/Shteyd/holidays/src/service/internal/storage"
+	"github.com/Shteyd/holidays/src/service/internal/module/customer/storage"
 )
 
 func (usecase CustomerUsecase) UpdateCustomer(
@@ -28,7 +28,7 @@ func (usecase CustomerUsecase) UpdateCustomer(
 
 	err := usecase.customerStorage.UpdateCustomer(ctx, customerID, name, email, passwordHash)
 	if err != nil {
-		if errors.Is(err, storage.ErrNotFound) {
+		if errors.Is(err, storage.ErrCustomerNotFound) {
 			log.Warn("customer not found")
 			return ErrCustomerNotFound
 		}

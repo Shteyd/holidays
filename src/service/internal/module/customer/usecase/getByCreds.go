@@ -8,7 +8,7 @@ import (
 
 	"github.com/Shteyd/holidays/src/service/internal/domain/entity"
 	"github.com/Shteyd/holidays/src/service/internal/lib/logger/sl"
-	"github.com/Shteyd/holidays/src/service/internal/storage"
+	"github.com/Shteyd/holidays/src/service/internal/module/customer/storage"
 )
 
 func (usecase CustomerUsecase) GetCustomerByCreds(ctx context.Context, email string, password string) (entity.Customer, error) {
@@ -29,7 +29,7 @@ func (usecase CustomerUsecase) GetCustomerByCreds(ctx context.Context, email str
 
 	customer, err := usecase.customerStorage.CustomerByCreds(ctx, email, passwordHash)
 	if err != nil {
-		if errors.Is(err, storage.ErrNotFound) {
+		if errors.Is(err, storage.ErrCustomerNotFound) {
 			log.Warn("customer not found")
 			return entity.Customer{}, ErrCustomerNotFound
 		}

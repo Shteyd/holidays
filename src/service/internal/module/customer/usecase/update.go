@@ -1,4 +1,4 @@
-package customer
+package usecase
 
 import (
 	"context"
@@ -26,7 +26,7 @@ func (usecase CustomerUsecase) UpdateCustomer(
 
 	log.Debug("updating customer")
 
-	err := usecase.customerManager.UpdateCustomer(ctx, customerID, name, email, passwordHash)
+	err := usecase.customerStorage.UpdateCustomer(ctx, customerID, name, email, passwordHash)
 	if err != nil {
 		if errors.Is(err, storage.ErrNotFound) {
 			log.Warn("customer not found")

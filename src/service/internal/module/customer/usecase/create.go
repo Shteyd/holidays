@@ -1,4 +1,4 @@
-package customer
+package usecase
 
 import (
 	"context"
@@ -24,7 +24,7 @@ func (usecase CustomerUsecase) CreateCustomer(ctx context.Context, name string, 
 		return 0, fmt.Errorf("%s: %w", op, err)
 	}
 
-	customerID, err := usecase.customerManager.CreateCustomer(ctx, name, email, passwordHash)
+	customerID, err := usecase.customerStorage.CreateCustomer(ctx, name, email, passwordHash)
 	if err != nil {
 		log.Error("failed to save customer", sl.Err(err))
 		return 0, fmt.Errorf("%s: %w", op, err)

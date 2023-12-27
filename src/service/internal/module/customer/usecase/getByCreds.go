@@ -1,4 +1,4 @@
-package customer
+package usecase
 
 import (
 	"context"
@@ -27,7 +27,7 @@ func (usecase CustomerUsecase) GetCustomerByCreds(ctx context.Context, email str
 		return entity.Customer{}, fmt.Errorf("%s: %w", op, err)
 	}
 
-	customer, err := usecase.customerProvider.CustomerByCreds(ctx, email, passwordHash)
+	customer, err := usecase.customerStorage.CustomerByCreds(ctx, email, passwordHash)
 	if err != nil {
 		if errors.Is(err, storage.ErrNotFound) {
 			log.Warn("customer not found")

@@ -1,4 +1,4 @@
-package customer
+package usecase
 
 import (
 	"context"
@@ -17,7 +17,17 @@ type passwordManager interface {
 	Compare(hashedPassword string, password string) error
 }
 
-type customerProvider interface {
+type customerStorage interface {
+	CreateCustomer(
+		ctx context.Context,
+		name string,
+		email string,
+		passwordHash string,
+	) (int64, error)
+	DeleteCustomer(
+		ctx context.Context,
+		customerID int64,
+	) error
 	CustomerByID(
 		ctx context.Context,
 		customerID int64,
@@ -27,15 +37,6 @@ type customerProvider interface {
 		email string,
 		password string,
 	) (entity.Customer, error)
-}
-
-type customerManager interface {
-	CreateCustomer(
-		ctx context.Context,
-		name string,
-		email string,
-		passwordHash string,
-	) (int64, error)
 	UpdateCustomer(
 		ctx context.Context,
 		customerID int64,
@@ -43,29 +44,22 @@ type customerManager interface {
 		email string,
 		passwordHash string,
 	) error
-	DeleteCustomer(
-		ctx context.Context,
-		customerID int64,
-	) error
 }
 
 type CustomerUsecase struct {
-	logger           *slog.Logger
-	customerProvider customerProvider
-	customerManager  customerManager
-	passwordManager  passwordManager
+	logger          *slog.Logger
+	passwordManager passwordManager
+	customerStorage customerStorage
 }
 
 func New(
 	logger *slog.Logger,
-	customerProvider customerProvider,
-	customerManager customerManager,
 	passwordManager passwordManager,
+	customerStorage customerStorage,
 ) CustomerUsecase {
 	return CustomerUsecase{
-		logger:           logger,
-		customerProvider: customerProvider,
-		customerManager:  customerManager,
-		passwordManager:  passwordManager,
+		logger:          logger,
+		passwordManager: passwordManager,
+		customerStorage: customerStorage,
 	}
 }

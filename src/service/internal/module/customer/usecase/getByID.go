@@ -1,4 +1,4 @@
-package customer
+package usecase
 
 import (
 	"context"
@@ -21,7 +21,7 @@ func (usecase CustomerUsecase) GetCustomerByID(ctx context.Context, customerID i
 
 	log.Debug("getting customer")
 
-	customer, err := usecase.customerProvider.CustomerByID(ctx, customerID)
+	customer, err := usecase.customerStorage.CustomerByID(ctx, customerID)
 	if err != nil {
 		if errors.Is(err, storage.ErrNotFound) {
 			log.Warn("customer not found")

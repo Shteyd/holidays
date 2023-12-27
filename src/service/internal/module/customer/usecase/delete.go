@@ -1,4 +1,4 @@
-package customer
+package usecase
 
 import (
 	"context"
@@ -20,7 +20,7 @@ func (usecase CustomerUsecase) DeleteCustomer(ctx context.Context, customerID in
 
 	log.Debug("deleting customer")
 
-	err := usecase.customerManager.DeleteCustomer(ctx, customerID)
+	err := usecase.customerStorage.DeleteCustomer(ctx, customerID)
 	if err != nil {
 		if errors.Is(err, storage.ErrNotFound) {
 			log.Warn("customer not found")
